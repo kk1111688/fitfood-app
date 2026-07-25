@@ -1,0 +1,25 @@
+{
+  "name": "燃脂食堂",
+  "short_name": "燃脂食堂",
+  "description": "健身动作指导与每日饮食规划",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#ff6b35",
+  "theme_color": "#ff6b35",
+  "icons": [
+    {
+      "src": "icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["health", "fitness", "food", "lifestyle"]
+}
