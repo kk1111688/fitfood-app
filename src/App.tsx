@@ -7,7 +7,9 @@ import { Meals } from './pages/Meals';
 import { MealDetail } from './pages/MealDetail';
 import { Plans } from './pages/Plans';
 import { PlanDetail } from './pages/PlanDetail';
+import { WorkoutSession } from './pages/WorkoutSession';
 import { Profile } from './pages/Profile';
+import { EditProfile } from './pages/EditProfile';
 
 type Page = 
   | 'home' 
@@ -17,6 +19,8 @@ type Page =
   | `meal/${string}` 
   | 'plans' 
   | `plan/${string}` 
+  | 'workout' 
+  | 'edit-profile'
   | 'profile';
 
 function App() {
@@ -45,6 +49,8 @@ function App() {
         return <Plans onNavigate={handleNavigate} />;
       case 'profile':
         return <Profile onNavigate={handleNavigate} />;
+      case 'edit-profile':
+        return <EditProfile onBack={() => handleNavigate('profile')} />;
       default:
         if (currentPage.startsWith('exercise/')) {
           const exerciseId = currentPage.split('/')[1];
@@ -62,9 +68,11 @@ function App() {
     }
   };
 
-  const showBottomNav = !currentPage.startsWith('exercise/') && 
+  const showBottomNav = currentPage !== 'edit-profile' &&
+                        !currentPage.startsWith('exercise/') && 
                         !currentPage.startsWith('meal/') && 
-                        !currentPage.startsWith('plan/');
+                        !currentPage.startsWith('plan/') &&
+                        currentPage !== 'workout';
 
   return (
     <div className="max-w-md mx-auto bg-white min-h-screen relative">

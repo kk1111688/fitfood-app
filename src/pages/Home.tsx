@@ -1,25 +1,55 @@
+import { Flame, Droplets, Moon, Activity, ArrowRight, ChevronRight, TrendingUp, Heart, Plus, Minus } from 'lucide-react';
 import { useState } from 'react';
-import { Flame, Droplets, Moon, Activity, ArrowRight, ChevronRight, TrendingUp, Heart } from 'lucide-react';
 import { StatCard } from '../components/StatCard';
 import { ExerciseCard } from '../components/ExerciseCard';
 import { MealCard } from '../components/MealCard';
 import { exercises } from '../data/exercises';
 import { meals } from '../data/meals';
-import { userProfile, todayLog, weeklyLogs } from '../data/plans';
+import { weeklyLogs } from '../data/plans';
+import { useAppStore } from '../store/appStore';
 
 interface HomeProps {
   onNavigate: (page: string) => void;
 }
 
 export function Home({ onNavigate }: HomeProps) {
-  const [water, setWater] = useState(todayLog.water);
-  const [sleep, setSleep] = useState(todayLog.sleep);
+  const { user, todayLog, updateWater, updateSleep } = useAppStore();
+  const [showWaterModal, setShowWaterModal] = useState(false);
+  const [showSleepModal, setShowSleepModal] = useState(false);
+  const [tempWater, setTempWater] = useState(todayLog.water);
+  const [tempSleep, setTempSleep] = useState(todayLog.sleep);
 
   const quickStats = [
-    { icon: Flame, label: '今日消耗', value: todayLog.caloriesBurned, subValue: '目标 500卡', color: 'orange' as const },
-    { icon: Activity, label: '今日摄入', value: todayLog.caloriesConsumed, subValue: '目标 2000卡', color: 'primary' as const },
-    { icon: Droplets, label: '饮水量', value: `${water}ml`, subValue: '目标 2000ml', color: 'blue' as const },
-    { icon: Moon, label: '睡眠', value: `${sleep}小时`, subValue: '目标 8小时', color: 'purple' as const },
+    { 
+      icon: Flame, 
+      label: '今日消耗', 
+      value: todayLog.caloriesBurned, 
+      subValue: `目标 ${user.targetCalories - 500}卡`, 
+      color: 'orange' as const 
+    },
+    { 
+      icon: Activity, 
+      label: '今日摄入', 
+      value: todayLog.caloriesConsumed, 
+      subValue: `目标 ${user.targetCalories}卡`, 
+      color: 'primary' as const 
+    },
+    { 
+      icon: Droplets, 
+      label: '饮水量', 
+      value: `${todayLog.water}ml`, 
+      subValue: '目标 2000ml', 
+      color: 'blue' as const,
+      onClick: () => { setTempWater(todayLog.water); setShowWaterModal(true); }
+    },
+    { 
+      icon: Moon, 
+      label: '睡眠', 
+      value: `${todayLog.sleep}小时`, 
+      subValue: '目标 8小时', 
+      color: 'purple' as const,
+      onClick: () => { setTempSleep(todayLog.sleep); setShowSleepModal(true); }
+    },
   ];
 
   const recentExercises = exercises.slice(0, 3);
@@ -33,12 +63,12 @@ export function Home({ onNavigate }: HomeProps) {
       <div className="bg-gradient-to-r from-primary-500 to-primary-400 text-white px-4 pt-16 pb-8 rounded-b-3xl">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <p className="text-primary-100 text-sm">欢迎回来，{userProfile.name}</p>
+            <p className="text-primary-100 text-sm">欢迎回来，{user.name}</p>
             <h2 className="text-2xl font-bold">今天也要加油！</h2>
           </div>
           <div className="flex items-center gap-2 bg-white/20 px-3 py-1.5 rounded-full">
             <Flame className="w-4 h-4 text-orange-300" />
-            <span className="text-sm font-medium">{userProfile.streak}天连续</span>
+            <span className="text-sm font-medium">{user.streak}天连续</span>
           </div>
         </div>
         
@@ -66,14 +96,15 @@ export function Home({ onNavigate }: HomeProps) {
       <div className="px-4 -mt-4">
         <div className="grid grid-cols-2 gap-3">
           {quickStats.map((stat, index) => (
-            <StatCard
-              key={index}
-              icon={stat.icon}
-              label={stat.label}
-              value={stat.value}
-              subValue={stat.subValue}
-              color={stat.color}
-            />
+            <div key={index} onClick={stat.onClick} className={stat.onClick ? 'cursor-pointer' : ''}>
+              <StatCard
+                icon={stat.icon}
+                label={stat.label}
+                value={stat.value}
+                subValue={stat.subValue}
+                color={stat.color}
+              />
+            </div>
           ))}
         </div>
       </div>
@@ -137,6 +168,101 @@ export function Home({ onNavigate }: HomeProps) {
           <ArrowRight className="w-5 h-5" />
         </button>
       </div>
+
+      {showWaterModal && (
+        <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4" onClick={() => setShowWaterModal(false)}>
+          <div className="bg-white rounded-2xl p-6 max-w-sm w-full" onClick={(e) => e.stopPropagation()}>
+            <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
+              <Droplets className="w-5 h-5 text-blue-500" />
+              记录饮水量
+            </h3>
+            <div className="flex items-center justify-center gap-4 mb-6">
+              <button
+                onClick={() => setTempWater(Math.max(0, tempWater - 100))}
+                className="w-12 h-12 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center"
+              >
+                <Minus className="w-6 h-6" />
+              </button>
+              <div className="text-center">
+                <p className="text-3xl font-bold text-blue-600">{tempWater}</p>
+                <p className="text-sm text-gray-500">ml</p>
+              </div>
+              <button
+                onClick={() => setTempWater(tempWater + 100)}
+                className="w-12 h-12 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center"
+              >
+                <Plus className="w-6 h-6" />
+              </button>
+            </div>
+            <div className="grid grid-cols-4 gap-2 mb-6">
+              {[200, 300, 500, 1000].map((amount) => (
+                <button
+                  key={amount}
+                  onClick={() => setTempWater(tempWater + amount)}
+                  className="py-2 bg-blue-50 text-blue-600 rounded-lg text-sm font-medium"
+                >
+                  +{amount}
+                </button>
+              ))}
+            </div>
+            <button
+              onClick={() => { updateWater(tempWater); setShowWaterModal(false); }}
+              className="w-full bg-blue-500 text-white rounded-xl py-3 font-medium"
+            >
+              确认
+            </button>
+          </div>
+        </div>
+      )}
+
+      {showSleepModal && (
+        <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4" onClick={() => setShowSleepModal(false)}>
+          <div className="bg-white rounded-2xl p-6 max-w-sm w-full" onClick={(e) => e.stopPropagation()}>
+            <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
+              <Moon className="w-5 h-5 text-purple-500" />
+              记录睡眠时间
+            </h3>
+            <div className="flex items-center justify-center gap-4 mb-6">
+              <button
+                onClick={() => setTempSleep(Math.max(0, tempSleep - 0.5))}
+                className="w-12 h-12 rounded-full bg-purple-50 text-purple-600 flex items-center justify-center"
+              >
+                <Minus className="w-6 h-6" />
+              </button>
+              <div className="text-center">
+                <p className="text-3xl font-bold text-purple-600">{tempSleep}</p>
+                <p className="text-sm text-gray-500">小时</p>
+              </div>
+              <button
+                onClick={() => setTempSleep(tempSleep + 0.5)}
+                className="w-12 h-12 rounded-full bg-purple-50 text-purple-600 flex items-center justify-center"
+              >
+                <Plus className="w-6 h-6" />
+              </button>
+            </div>
+            <div className="flex items-center gap-2 mb-6">
+              <span className="text-sm text-gray-500">快速选择:</span>
+              {[6, 7, 8, 9].map((hours) => (
+                <button
+                  key={hours}
+                  onClick={() => setTempSleep(hours)}
+                  className={`px-3 py-1.5 rounded-lg text-sm font-medium ${
+                    tempSleep === hours ? 'bg-purple-500 text-white' : 'bg-purple-50 text-purple-600'
+                  }`}
+                >
+                  {hours}h
+                </button>
+              ))}
+            </div>
+            <button
+              onClick={() => { updateSleep(tempSleep); setShowSleepModal(false); }}
+              className="w-full bg-purple-500 text-white rounded-xl py-3 font-medium"
+            >
+              确认
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
