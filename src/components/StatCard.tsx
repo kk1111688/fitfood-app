@@ -1,4 +1,3 @@
-import React from 'react';
 import { LucideIcon } from 'lucide-react';
 
 interface StatCardProps {
@@ -6,7 +5,7 @@ interface StatCardProps {
   label: string;
   value: string | number;
   subValue?: string;
-  color: 'primary' | 'healthy' | 'blue' | 'purple';
+  color: 'primary' | 'healthy' | 'blue' | 'purple' | 'orange';
 }
 
 const colorClasses = {
@@ -14,6 +13,7 @@ const colorClasses = {
   healthy: 'bg-healthy-50 text-healthy-600',
   blue: 'bg-blue-50 text-blue-600',
   purple: 'bg-purple-50 text-purple-600',
+  orange: 'bg-orange-50 text-orange-600',
 };
 
 const iconBgClasses = {
@@ -21,25 +21,20 @@ const iconBgClasses = {
   healthy: 'bg-healthy-100',
   blue: 'bg-blue-100',
   purple: 'bg-purple-100',
+  orange: 'bg-orange-100',
 };
 
-export const StatCard: React.FC<StatCardProps> = ({
-  icon: Icon,
-  label,
-  value,
-  subValue,
-  color,
-}) => {
+export function StatCard({ icon: Icon, label, value, subValue, color }: StatCardProps) {
   return (
-    <div className={`${colorClasses[color]} rounded-2xl p-4 flex items-center gap-3`}>
-      <div className={`${iconBgClasses[color]} w-12 h-12 rounded-xl flex items-center justify-center`}>
-        <Icon size={24} />
+    <div className={`${colorClasses[color]} rounded-2xl p-4 flex items-center gap-3 card-hover`}>
+      <div className={`${iconBgClasses[color]} p-2.5 rounded-xl`}>
+        <Icon className="w-5 h-5" />
       </div>
       <div className="flex-1">
-        <p className="text-sm opacity-80">{label}</p>
-        <p className="text-xl font-bold">{value}</p>
+        <p className="text-xs opacity-70">{label}</p>
+        <p className="text-lg font-bold">{value}</p>
         {subValue && <p className="text-xs opacity-60">{subValue}</p>}
       </div>
     </div>
   );
-};
+}

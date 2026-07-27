@@ -1,35 +1,77 @@
-import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
-import { Home } from "@/pages/Home";
-import { Exercises } from "@/pages/Exercises";
-import { ExerciseDetail } from "@/pages/ExerciseDetail";
-import { Meals } from "@/pages/Meals";
-import { MealDetail } from "@/pages/MealDetail";
-import { Profile } from "@/pages/Profile";
-import { BottomNav } from "@/components/BottomNav";
+import { useState } from 'react';
+import { BottomNav } from './components/BottomNav';
+import { Home } from './pages/Home';
+import { Exercises } from './pages/Exercises';
+import { ExerciseDetail } from './pages/ExerciseDetail';
+import { Meals } from './pages/Meals';
+import { MealDetail } from './pages/MealDetail';
+import { Plans } from './pages/Plans';
+import { PlanDetail } from './pages/PlanDetail';
+import { Profile } from './pages/Profile';
 
-function AppContent() {
-  const location = useLocation();
-  const hideBottomNav = location.pathname.includes('/exercises/') || location.pathname.includes('/meals/');
+type Page = 
+  | 'home' 
+  | 'exercises' 
+  | `exercise/${string}` 
+  | 'meals' 
+  | `meal/${string}` 
+  | 'plans' 
+  | `plan/${string}` 
+  | 'profile';
+
+function App() {
+  const [currentPage, setCurrentPage] = useState<Page>('home');
+
+  const handleNavigate = (page: string) => {
+    setCurrentPage(page as Page);
+  };
+
+  const getActiveTab = () => {
+    if (currentPage.startsWith('exercise/')) return 'exercises';
+    if (currentPage.startsWith('meal/')) return 'meals';
+    if (currentPage.startsWith('plan/')) return 'plans';
+    return currentPage;
+  };
+
+  const renderPage = () => {
+    switch (currentPage) {
+      case 'home':
+        return <Home onNavigate={handleNavigate} />;
+      case 'exercises':
+        return <Exercises onNavigate={handleNavigate} />;
+      case 'meals':
+        return <Meals onNavigate={handleNavigate} />;
+      case 'plans':
+        return <Plans onNavigate={handleNavigate} />;
+      case 'profile':
+        return <Profile onNavigate={handleNavigate} />;
+      default:
+        if (currentPage.startsWith('exercise/')) {
+          const exerciseId = currentPage.split('/')[1];
+          return <ExerciseDetail exerciseId={exerciseId} onNavigate={handleNavigate} />;
+        }
+        if (currentPage.startsWith('meal/')) {
+          const mealId = currentPage.split('/')[1];
+          return <MealDetail mealId={mealId} onNavigate={handleNavigate} />;
+        }
+        if (currentPage.startsWith('plan/')) {
+          const planId = currentPage.split('/')[1];
+          return <PlanDetail planId={planId} onNavigate={handleNavigate} />;
+        }
+        return <Home onNavigate={handleNavigate} />;
+    }
+  };
+
+  const showBottomNav = !currentPage.startsWith('exercise/') && 
+                        !currentPage.startsWith('meal/') && 
+                        !currentPage.startsWith('plan/');
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/exercises" element={<Exercises />} />
-        <Route path="/exercises/:id" element={<ExerciseDetail />} />
-        <Route path="/meals" element={<Meals />} />
-        <Route path="/meals/:id" element={<MealDetail />} />
-        <Route path="/profile" element={<Profile />} />
-      </Routes>
-      {!hideBottomNav && <BottomNav />}
+    <div className="max-w-md mx-auto bg-white min-h-screen relative">
+      {renderPage()}
+      {showBottomNav && <BottomNav activeTab={getActiveTab()} onTabChange={handleNavigate} />}
     </div>
   );
 }
 
-export default function App() {
-  return (
-    <Router>
-      <AppContent />
-    </Router>
-  );
-}
+export default App;

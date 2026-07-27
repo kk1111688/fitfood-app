@@ -1,72 +1,93 @@
 export interface Exercise {
   id: string;
   name: string;
-  description: string;
   category: string;
-  targetMuscle: string;
-  difficulty: '初级' | '中级' | '高级';
+  targetMuscles: string[];
+  difficulty: 'beginner' | 'intermediate' | 'advanced';
+  equipment: string;
+  description: string;
+  instructions: string[];
   sets: number;
-  reps: number;
+  reps: string;
+  restTime: string;
+  calories: number;
   imageUrl: string;
   gifUrl?: string;
-  tips: string;
-  calories: number;
-  equipment?: string;
-  instructions?: string[];
 }
 
 export interface Meal {
   id: string;
   name: string;
-  description: string;
-  type: '减脂' | '增肌' | '均衡';
-  mealTime: '早餐' | '午餐' | '晚餐' | '加餐';
-  ingredients: string[];
-  instructions: string[];
+  category: 'breakfast' | 'lunch' | 'dinner' | 'snack';
   calories: number;
   protein: number;
   carbs: number;
   fat: number;
+  fiber: number;
+  ingredients: string[];
+  instructions: string;
+  description: string;
+  imageUrl: string;
+  prepTime: string;
+  servings: number;
+}
+
+export interface WorkoutPlan {
+  id: string;
+  name: string;
+  description: string;
+  duration: number;
+  exercises: string[];
+  calories: number;
+  level: 'beginner' | 'intermediate' | 'advanced';
   imageUrl: string;
 }
 
-export interface User {
+export interface DailyLog {
   id: string;
-  email: string;
+  date: string;
+  exercises: CompletedExercise[];
+  meals: CompletedMeal[];
+  caloriesBurned: number;
+  caloriesConsumed: number;
+  water: number;
+  sleep: number;
+  notes: string;
+}
+
+export interface CompletedExercise {
+  exerciseId: string;
+  sets: number;
+  reps: number;
+  weight?: number;
+}
+
+export interface CompletedMeal {
+  mealId: string;
+  servings: number;
+}
+
+export interface UserProfile {
+  id: string;
   name: string;
-  avatarUrl?: string;
+  avatar: string;
   height: number;
   weight: number;
-  fitnessGoal: '减脂' | '增肌' | '塑形' | '健康';
-  createdAt: string;
+  age: number;
+  gender: 'male' | 'female';
+  activityLevel: 'sedentary' | 'light' | 'moderate' | 'active' | 'very_active';
+  goal: 'lose_weight' | 'gain_muscle' | 'maintain' | 'improve_fitness';
+  targetCalories: number;
+  streak: number;
+  totalWorkouts: number;
+  totalCaloriesBurned: number;
+  joinDate: string;
 }
 
-export interface WorkoutLog {
-  id: string;
-  userId: string;
-  exerciseId: string;
-  date: string;
-  setsCompleted: number;
-  repsCompleted: number;
-  weightUsed?: number;
-  duration?: number;
+export interface Stat {
+  label: string;
+  value: string | number;
+  subValue?: string;
+  icon: string;
+  color: 'primary' | 'healthy' | 'blue' | 'purple' | 'orange';
 }
-
-export interface MealLog {
-  id: string;
-  userId: string;
-  mealId: string;
-  date: string;
-  quantity: number;
-  mealTime: string;
-}
-
-export interface DailyStats {
-  date: string;
-  caloriesIntake: number;
-  caloriesBurned: number;
-  exercisesCompleted: number;
-  mealsEaten: number;
-}
-
-export type CategoryType = '胸部' | '背部' | '腿部' | '肩部' | '手臂' | '核心' | '有氧' | '拉伸';

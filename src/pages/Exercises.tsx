@@ -1,84 +1,75 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import { Search, Filter } from 'lucide-react';
-import { Header } from '../components/Header';
 import { ExerciseCard } from '../components/ExerciseCard';
-import { useAppStore } from '../store/appStore';
-import { categories } from '../data/mockData';
+import { exercises, exerciseCategories } from '../data/exercises';
 
-export const Exercises: React.FC = () => {
-  const navigate = useNavigate();
-  const { exercises } = useAppStore();
-  const [selectedCategory, setSelectedCategory] = useState<string>('全部');
+interface ExercisesProps {
+  onNavigate: (page: string) => void;
+}
+
+export function Exercises({ onNavigate }: ExercisesProps) {
   const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('全部');
 
-  const filteredExercises = exercises.filter(exercise => {
-    const matchCategory = selectedCategory === '全部' || exercise.category === selectedCategory;
-    const matchSearch = exercise.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      exercise.description.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchCategory && matchSearch;
+  const filteredExercises = exercises.filter((exercise) => {
+    const matchesSearch = exercise.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         exercise.description.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesCategory = selectedCategory === '全部' || exercise.category === selectedCategory;
+    return matchesSearch && matchesCategory;
   });
 
-  const allCategories = ['全部', ...categories];
-
   return (
-    <div className="min-h-screen bg-gray-50 pb-20">
-      <Header title="动作库" />
-      
-      <div className="px-4 py-4">
-        <div className="relative mb-4">
-          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
-          <input
-            type="text"
-            placeholder="搜索动作..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-12 pr-4 py-3 bg-white rounded-xl shadow-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500"
-          />
-        </div>
-
-        <div className="flex items-center gap-2 mb-4 overflow-x-auto scrollbar-hide">
-          {allCategories.map((category) => (
-            <button
-              key={category}
-              onClick={() => setSelectedCategory(category)}
-              className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all ${
-                selectedCategory === category
-                  ? 'bg-primary-500 text-white'
-                  : 'bg-white text-gray-600 hover:bg-gray-100'
-              }`}
-            >
-              {category}
-            </button>
-          ))}
+    <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-healthy-50 pb-20">
+      <div className="bg-white shadow-sm sticky top-0 z-40">
+        <div className="px-4 pt-16 pb-4">
+          <h1 className="text-xl font-bold text-gray-800 mb-4">动作库</h1>
+          <div className="relative mb-4">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+            <input
+              type="text"
+              placeholder="搜索动作..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full bg-gray-100 rounded-xl pl-10 pr-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary-200"
+            />
+          </div>
+          <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-hide">
+            {exerciseCategories.map((category) => (
+              <button
+                key={category}
+                onClick={() => setSelectedCategory(category)}
+                className={`px-4 py-1.5 rounded-full text-sm font-medium whitespace-nowrap transition-all ${
+                  selectedCategory === category
+                    ? 'bg-primary-500 text-white'
+                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                }`}
+              >
+                {category}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
-      <div className="px-4">
+      <div className="px-4 py-4">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="font-bold text-lg text-gray-800">
-            {selectedCategory === '全部' ? '全部动作' : `${selectedCategory}训练`}
-          </h3>
-          <span className="text-sm text-gray-400">{filteredExercises.length}个动作</span>
+          <span className="text-sm text-gray-500">共 {filteredExercises.length} 个动作</span>
+          <button className="flex items-center gap-1 text-sm text-gray-500">
+            <Filter className="w-4 h-4" />
+            筛选
+          </button>
         </div>
-
-        {filteredExercises.length > 0 ? (
-          <div className="grid grid-cols-2 gap-4">
-            {filteredExercises.map((exercise) => (
-              <ExerciseCard
-                key={exercise.id}
-                exercise={exercise}
-                onClick={() => navigate(`/exercises/${exercise.id}`)}
-              />
-            ))}
-          </div>
-        ) : (
-          <div className="flex flex-col items-center justify-center py-16">
-            <Filter className="text-gray-300" size={48} />
-            <p className="text-gray-400 mt-4">没有找到匹配的动作</p>
+        <div className="grid grid-cols-2 gap-3">
+          {filteredExercises.map((exercise) => (
+            <ExerciseCard key={exercise.id} exercise={exercise} onClick={() => onNavigate(`exercise/${exercise.id}`)} />
+          ))}
+        </div>
+        {filteredExercises.length === 0 && (
+          <div className="text-center py-12">
+            <p className="text-gray-500">没有找到相关动作</p>
           </div>
         )}
       </div>
     </div>
   );
-};
+}
