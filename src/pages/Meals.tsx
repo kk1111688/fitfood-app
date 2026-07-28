@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Search, Filter } from 'lucide-react';
+import { Search, Filter, Sparkles, ChefHat } from 'lucide-react';
 import { MealCard } from '../components/MealCard';
 import { meals, mealCategories } from '../data/meals';
 
@@ -31,6 +31,24 @@ export function Meals({ onNavigate }: MealsProps) {
       <div className="bg-white shadow-sm sticky top-0 z-40">
         <div className="px-4 pt-16 pb-4">
           <h1 className="text-xl font-bold text-gray-800 mb-4">食谱库</h1>
+          
+          <button
+            onClick={() => onNavigate('ingredient-recipe')}
+            className="w-full mb-4 bg-gradient-to-r from-primary-500 to-primary-400 rounded-2xl p-4 text-white flex items-center gap-3 shadow-lg hover:shadow-xl transition-shadow"
+          >
+            <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
+              <Sparkles className="w-6 h-6" />
+            </div>
+            <div className="flex-1 text-left">
+              <div className="font-bold flex items-center gap-1">
+                <ChefHat className="w-4 h-4" />
+                智能推荐
+              </div>
+              <p className="text-sm opacity-90">选择食材，为你推荐可做的菜</p>
+            </div>
+            <div className="text-white/70">→</div>
+          </button>
+
           <div className="relative mb-4">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
             <input

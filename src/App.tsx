@@ -5,6 +5,7 @@ import { Exercises } from './pages/Exercises';
 import { ExerciseDetail } from './pages/ExerciseDetail';
 import { Meals } from './pages/Meals';
 import { MealDetail } from './pages/MealDetail';
+import { IngredientRecipe } from './pages/IngredientRecipe';
 import { Plans } from './pages/Plans';
 import { PlanDetail } from './pages/PlanDetail';
 import { WorkoutSession } from './pages/WorkoutSession';
@@ -21,6 +22,7 @@ type Page =
   | 'community'
   | 'meals' 
   | `meal/${string}` 
+  | 'ingredient-recipe'
   | 'plans' 
   | `plan/${string}` 
   | 'workout' 
@@ -39,6 +41,7 @@ function App() {
   const getActiveTab = () => {
     if (currentPage.startsWith('exercise/')) return 'exercises';
     if (currentPage.startsWith('meal/')) return 'meals';
+    if (currentPage === 'ingredient-recipe') return 'meals';
     if (currentPage.startsWith('plan/')) return 'plans';
     return currentPage;
   };
@@ -53,6 +56,8 @@ function App() {
         return <Community />;
       case 'meals':
         return <Meals onNavigate={handleNavigate} />;
+      case 'ingredient-recipe':
+        return <IngredientRecipe onNavigate={handleNavigate} />;
       case 'plans':
         return <Plans onNavigate={handleNavigate} />;
       case 'profile':
