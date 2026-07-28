@@ -146,3 +146,21 @@ export interface Topic {
   posts: number;
   icon: string;
 }
+
+export interface DayPlan {
+  day: string;
+  breakfast: string | null;
+  lunch: string | null;
+  dinner: string | null;
+  snack: string | null;
+  exerciseIds: string[];
+  restDay: boolean;
+}
+
+export interface WeeklyPlan {
+  id: string;
+  name: string;
+  goal: 'lose_weight' | 'gain_muscle' | 'maintain' | 'improve_fitness';
+  startDate: string;
+  days: DayPlan[];
+}

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Filter, ArrowRight, CheckCircle } from 'lucide-react';
+import { Filter, ArrowRight, CheckCircle, Calendar, Sparkles } from 'lucide-react';
 import { PlanCard } from '../components/PlanCard';
 import { workoutPlans } from '../data/plans';
 
@@ -47,6 +47,23 @@ export function Plans({ onNavigate }: PlansProps) {
       </div>
 
       <div className="px-4 py-4">
+        <button
+          onClick={() => onNavigate('weekly-plan')}
+          className="w-full mb-4 bg-gradient-to-r from-primary-500 to-healthy-400 rounded-2xl p-4 text-white flex items-center gap-3 shadow-lg hover:shadow-xl transition-shadow"
+        >
+          <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
+            <Calendar className="w-6 h-6" />
+          </div>
+          <div className="flex-1 text-left">
+            <div className="font-bold flex items-center gap-1">
+              <Sparkles className="w-4 h-4" />
+              一周饮食+训练计划
+            </div>
+            <p className="text-sm opacity-90">智能生成一周饮食和训练安排</p>
+          </div>
+          <ArrowRight className="w-5 h-5 text-white/80" />
+        </button>
+
         <div className="flex items-center justify-between mb-4">
           <span className="text-sm text-gray-500">共 {filteredPlans.length} 个计划</span>
           <button className="flex items-center gap-1 text-sm text-gray-500">

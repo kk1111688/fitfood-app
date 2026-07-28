@@ -15,6 +15,7 @@ import { History } from './pages/History';
 import { Favorites } from './pages/Favorites';
 import { Community } from './pages/Community';
 import { CalorieTester } from './pages/CalorieTester';
+import { WeeklyPlanPage } from './pages/WeeklyPlanPage';
 
 type Page = 
   | 'home' 
@@ -27,6 +28,7 @@ type Page =
   | 'calorie-tester'
   | 'plans' 
   | `plan/${string}` 
+  | 'weekly-plan'
   | 'workout' 
   | 'edit-profile'
   | 'profile'
@@ -45,6 +47,7 @@ function App() {
     if (currentPage.startsWith('meal/')) return 'meals';
     if (currentPage === 'ingredient-recipe') return 'meals';
     if (currentPage === 'calorie-tester') return 'meals';
+    if (currentPage === 'weekly-plan') return 'plans';
     if (currentPage.startsWith('plan/')) return 'plans';
     return currentPage;
   };
@@ -65,6 +68,8 @@ function App() {
         return <CalorieTester onNavigate={handleNavigate} />;
       case 'plans':
         return <Plans onNavigate={handleNavigate} />;
+      case 'weekly-plan':
+        return <WeeklyPlanPage onNavigate={handleNavigate} />;
       case 'profile':
         return <Profile onNavigate={handleNavigate} />;
       case 'edit-profile':
@@ -94,6 +99,7 @@ function App() {
                         !currentPage.startsWith('exercise/') && 
                         !currentPage.startsWith('meal/') && 
                         !currentPage.startsWith('plan/') &&
+                        currentPage !== 'weekly-plan' &&
                         currentPage !== 'workout' &&
                         currentPage !== 'history' &&
                         currentPage !== 'favorites';

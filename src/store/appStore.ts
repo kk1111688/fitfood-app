@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { UserProfile, DailyLog, WorkoutRecord, WeightRecord } from '../types';
+import { UserProfile, DailyLog, WorkoutRecord, WeightRecord, WeeklyPlan, DayPlan } from '../types';
 import { userProfile, todayLog } from '../data/plans';
 
 interface AppStore {
@@ -12,6 +12,7 @@ interface AppStore {
   workoutHistory: WorkoutRecord[];
   weightHistory: WeightRecord[];
   lastCheckInDate: string | null;
+  weeklyPlan: WeeklyPlan | null;
   setActiveTab: (tab: string) => void;
   updateUser: (data: Partial<UserProfile>) => void;
   updateWater: (water: number) => void;
@@ -29,6 +30,9 @@ interface AppStore {
   addWorkoutRecord: (record: WorkoutRecord) => void;
   addWeightRecord: (weight: number) => void;
   checkIn: () => boolean;
+  setWeeklyPlan: (plan: WeeklyPlan) => void;
+  updateDayPlan: (dayIndex: number, dayPlan: Partial<DayPlan>) => void;
+  clearWeeklyPlan: () => void;
 }
 
 export const useAppStore = create<AppStore>()(
@@ -42,6 +46,7 @@ export const useAppStore = create<AppStore>()(
       workoutHistory: [],
       weightHistory: [],
       lastCheckInDate: null,
+      weeklyPlan: null,
       setActiveTab: (tab) => set({ activeTab: tab }),
       updateUser: (data) => set((state) => ({ user: { ...state.user, ...data } })),
       updateWater: (water) => set((state) => ({ todayLog: { ...state.todayLog, water } })),
@@ -160,6 +165,14 @@ export const useAppStore = create<AppStore>()(
           }
         };
       }),
+      setWeeklyPlan: (plan) => set({ weeklyPlan: plan }),
+      updateDayPlan: (dayIndex, dayPlan) => set((state) => {
+        if (!state.weeklyPlan) return state;
+        const newDays = [...state.weeklyPlan.days];
+        newDays[dayIndex] = { ...newDays[dayIndex], ...dayPlan };
+        return { weeklyPlan: { ...state.weeklyPlan, days: newDays } };
+      }),
+      clearWeeklyPlan: () => set({ weeklyPlan: null }),
     }),
     {
       name: 'fitfood-storage',
