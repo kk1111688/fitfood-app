@@ -14,7 +14,7 @@ self.addEventListener('install', (event) => {
   self.skipWaiting();
 });
 
-// 激活：删除所有旧版本缓存，立即接管页面
+// 激活：删除所有旧版本缓存，立即接管页面并刷新
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((cacheNames) => {
@@ -25,9 +25,17 @@ self.addEventListener('activate', (event) => {
           }
         })
       );
+    }).then(() => {
+      return self.clients.claim();
+    }).then(() => {
+      // 通知所有页面刷新，确保加载最新内容
+      return self.clients.matchAll({ type: 'window' });
+    }).then((clients) => {
+      clients.forEach((client) => {
+        client.navigate(client.url);
+      });
     })
   );
-  self.clients.claim();
 });
 
 self.addEventListener('fetch', (event) => {
