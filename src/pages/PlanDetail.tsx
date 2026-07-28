@@ -40,6 +40,7 @@ export function PlanDetail({ planId, onNavigate }: PlanDetailProps) {
       <WorkoutSession
         exercises={planExercises}
         planName={plan.name}
+        planId={plan.id}
         onComplete={() => {
           setIsWorkingOut(false);
           onNavigate('plans');

@@ -1,4 +1,4 @@
-import { User, Flame, Target, Calendar, Settings, HelpCircle, Share2, ChevronRight, Edit3 } from 'lucide-react';
+import { User, Flame, Target, Calendar, Settings, Heart, ChevronRight, Edit3, TrendingUp, Award, Clock, Trophy } from 'lucide-react';
 import { useAppStore } from '../store/appStore';
 
 interface ProfileProps {
@@ -21,7 +21,7 @@ const activityLabels: Record<string, string> = {
 };
 
 export function Profile({ onNavigate }: ProfileProps) {
-  const { user } = useAppStore();
+  const { user, favoriteExercises, favoriteMeals, workoutHistory, weightHistory } = useAppStore();
   const bmi = user.weight / Math.pow(user.height / 100, 2);
   const bmiStatus = bmi < 18.5 ? '偏瘦' : bmi < 24 ? '正常' : bmi < 28 ? '超重' : '肥胖';
   const bmiColor = bmi < 18.5 ? 'text-blue-500' : bmi < 24 ? 'text-healthy-500' : bmi < 28 ? 'text-orange-500' : 'text-red-500';
@@ -32,13 +32,18 @@ export function Profile({ onNavigate }: ProfileProps) {
     { label: '消耗卡路里', value: user.totalCaloriesBurned, color: 'orange' as const },
   ];
 
+  const weeklyStats = {
+    workouts: workoutHistory.length,
+    calories: workoutHistory.reduce((sum, r) => sum + r.caloriesBurned, 0),
+    duration: workoutHistory.reduce((sum, r) => sum + r.duration, 0),
+  };
+
   const menuItems = [
-    { icon: Target, label: '我的目标', value: goalLabels[user.goal], action: () => onNavigate('edit-profile') },
-    { icon: Calendar, label: '训练记录', value: `${user.totalWorkouts}次`, action: () => onNavigate('plans') },
-    { icon: Flame, label: '累计消耗', value: `${user.totalCaloriesBurned}卡`, action: () => onNavigate('plans') },
-    { icon: Settings, label: '设置', value: '', action: () => {} },
-    { icon: HelpCircle, label: '帮助与反馈', value: '', action: () => {} },
-    { icon: Share2, label: '分享应用', value: '', action: () => {} },
+    { icon: Heart, label: '我的收藏', value: `${favoriteExercises.length + favoriteMeals.length}项`, action: () => onNavigate('favorites') },
+    { icon: Calendar, label: '训练记录', value: `${workoutHistory.length}次训练`, action: () => onNavigate('history') },
+    { icon: TrendingUp, label: '体重记录', value: weightHistory.length > 0 ? `${weightHistory.length}条记录` : '暂无记录', action: () => {} },
+    { icon: Award, label: '成就徽章', value: '', action: () => {} },
+    { icon: Settings, label: '设置', value: '', action: () => onNavigate('edit-profile') },
   ];
 
   return (
@@ -106,15 +111,7 @@ export function Profile({ onNavigate }: ProfileProps) {
 
       <div className="px-4 mt-4">
         <div className="bg-white rounded-2xl p-4 shadow-card">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="font-bold text-gray-800">运动统计</h3>
-            <button
-              onClick={() => onNavigate('plans')}
-              className="text-sm text-primary-600 flex items-center gap-1"
-            >
-              查看详情 <ChevronRight className="w-4 h-4" />
-            </button>
-          </div>
+          <h3 className="font-bold text-gray-800 mb-3">运动统计</h3>
           <div className="grid grid-cols-3 gap-4">
             {stats.map((stat, index) => (
               <div key={index} className="text-center">
@@ -125,6 +122,35 @@ export function Profile({ onNavigate }: ProfileProps) {
                 <p className="text-xs text-gray-500">{stat.label}</p>
               </div>
             ))}
+          </div>
+        </div>
+      </div>
+
+      <div className="px-4 mt-4">
+        <div className="bg-white rounded-2xl p-4 shadow-card">
+          <h3 className="font-bold text-gray-800 mb-3">本周数据</h3>
+          <div className="grid grid-cols-3 gap-4">
+            <div className="text-center bg-primary-50 rounded-xl p-3">
+              <div className="w-10 h-10 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-2">
+                <Calendar className="w-5 h-5 text-primary-500" />
+              </div>
+              <p className="text-lg font-bold text-gray-800">{weeklyStats.workouts}</p>
+              <p className="text-xs text-gray-500">训练次数</p>
+            </div>
+            <div className="text-center bg-orange-50 rounded-xl p-3">
+              <div className="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-2">
+                <Flame className="w-5 h-5 text-orange-500" />
+              </div>
+              <p className="text-lg font-bold text-gray-800">{weeklyStats.calories}</p>
+              <p className="text-xs text-gray-500">消耗(卡)</p>
+            </div>
+            <div className="text-center bg-healthy-50 rounded-xl p-3">
+              <div className="w-10 h-10 bg-healthy-100 rounded-full flex items-center justify-center mx-auto mb-2">
+                <Clock className="w-5 h-5 text-healthy-500" />
+              </div>
+              <p className="text-lg font-bold text-gray-800">{weeklyStats.duration}</p>
+              <p className="text-xs text-gray-500">总时长(分)</p>
+            </div>
           </div>
         </div>
       </div>
@@ -175,7 +201,7 @@ export function Profile({ onNavigate }: ProfileProps) {
 
       <div className="px-4 mt-6">
         <p className="text-center text-sm text-gray-400">
-          燃脂食堂 v1.1.0
+          燃脂食堂 v2.0.0
         </p>
       </div>
     </div>

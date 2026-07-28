@@ -1,21 +1,26 @@
 import { useState, useEffect } from 'react';
 import { ArrowLeft, Play, Pause, SkipForward, CheckCircle, Flame, Clock, Dumbbell } from 'lucide-react';
-import { Exercise } from '../types';
+import { Exercise, WorkoutRecord } from '../types';
+import { useAppStore } from '../store/appStore';
 
 interface WorkoutSessionProps {
   exercises: Exercise[];
   planName: string;
+  planId?: string;
   onComplete: () => void;
   onBack: () => void;
 }
 
-export function WorkoutSession({ exercises, planName, onComplete, onBack }: WorkoutSessionProps) {
+export function WorkoutSession({ exercises, planName, planId, onComplete, onBack }: WorkoutSessionProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [timeLeft, setTimeLeft] = useState(60);
   const [isResting, setIsResting] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const [completedSets, setCompletedSets] = useState(0);
   const [totalCalories, setTotalCalories] = useState(0);
+  const [totalDuration, setTotalDuration] = useState(0);
+  const [startTime] = useState(Date.now());
+  const { addWorkoutRecord, updateCalories } = useAppStore();
 
   const currentExercise = exercises[currentIndex];
   const totalExercises = exercises.length;
@@ -33,6 +38,10 @@ export function WorkoutSession({ exercises, planName, onComplete, onBack }: Work
             }
             return prev - 1;
           });
+        }, 1000);
+      } else {
+        timer = setInterval(() => {
+          setTotalDuration((prev) => prev + 1);
         }, 1000);
       }
     }
@@ -60,6 +69,19 @@ export function WorkoutSession({ exercises, planName, onComplete, onBack }: Work
   };
 
   const handleFinishWorkout = () => {
+    const record: WorkoutRecord = {
+      id: `workout-${Date.now()}`,
+      date: new Date().toISOString(),
+      planId,
+      planName,
+      duration: Math.round(totalDuration / 60),
+      caloriesBurned: Math.round(totalCalories),
+      exercisesCompleted: totalExercises,
+      totalSets: exercises.reduce((sum, ex) => sum + ex.sets, 0),
+      totalReps: exercises.reduce((sum, ex) => sum + parseInt(ex.reps), 0),
+    };
+    addWorkoutRecord(record);
+    updateCalories(Math.round(totalCalories), 0);
     onComplete();
   };
 

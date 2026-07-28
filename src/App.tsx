@@ -10,6 +10,8 @@ import { PlanDetail } from './pages/PlanDetail';
 import { WorkoutSession } from './pages/WorkoutSession';
 import { Profile } from './pages/Profile';
 import { EditProfile } from './pages/EditProfile';
+import { History } from './pages/History';
+import { Favorites } from './pages/Favorites';
 
 type Page = 
   | 'home' 
@@ -21,7 +23,9 @@ type Page =
   | `plan/${string}` 
   | 'workout' 
   | 'edit-profile'
-  | 'profile';
+  | 'profile'
+  | 'history'
+  | 'favorites';
 
 function App() {
   const [currentPage, setCurrentPage] = useState<Page>('home');
@@ -51,6 +55,10 @@ function App() {
         return <Profile onNavigate={handleNavigate} />;
       case 'edit-profile':
         return <EditProfile onBack={() => handleNavigate('profile')} />;
+      case 'history':
+        return <History onNavigate={handleNavigate} />;
+      case 'favorites':
+        return <Favorites onNavigate={handleNavigate} />;
       default:
         if (currentPage.startsWith('exercise/')) {
           const exerciseId = currentPage.split('/')[1];
@@ -72,7 +80,9 @@ function App() {
                         !currentPage.startsWith('exercise/') && 
                         !currentPage.startsWith('meal/') && 
                         !currentPage.startsWith('plan/') &&
-                        currentPage !== 'workout';
+                        currentPage !== 'workout' &&
+                        currentPage !== 'history' &&
+                        currentPage !== 'favorites';
 
   return (
     <div className="max-w-md mx-auto bg-white min-h-screen relative">

@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { ArrowLeft, Clock, Flame, Utensils, CheckCircle, Leaf } from 'lucide-react';
+import { ArrowLeft, Clock, Flame, Utensils, CheckCircle, Leaf, Heart } from 'lucide-react';
 import { meals } from '../data/meals';
 import { categoryMap } from '../data/meals';
+import { useAppStore } from '../store/appStore';
 
 interface MealDetailProps {
   mealId: string;
@@ -18,13 +19,20 @@ const categoryColors = {
 export function MealDetail({ mealId, onNavigate }: MealDetailProps) {
   const [showToast, setShowToast] = useState(false);
   const meal = meals.find(m => m.id === mealId);
+  const { favoriteMeals, toggleFavoriteMeal, addMeal, todayLog } = useAppStore();
+  const isFavorite = favoriteMeals.includes(mealId);
 
   const handleRecordMeal = () => {
-    setShowToast(true);
-    setTimeout(() => {
-      setShowToast(false);
-    }, 2000);
+    if (meal) {
+      addMeal(meal.id, 1);
+      setShowToast(true);
+      setTimeout(() => {
+        setShowToast(false);
+      }, 2000);
+    }
   };
+
+  const hasRecorded = meal ? todayLog.meals.some(m => m.mealId === meal.id) : false;
 
   if (!meal) {
     return (
@@ -37,14 +45,20 @@ export function MealDetail({ mealId, onNavigate }: MealDetailProps) {
   return (
     <div className="min-h-screen bg-white pb-20">
       <div className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm shadow-sm">
-        <div className="max-w-md mx-auto px-4 h-14 flex items-center">
+        <div className="max-w-md mx-auto px-4 h-14 flex items-center justify-between">
           <button
             onClick={() => onNavigate('meals')}
             className="p-2 rounded-full hover:bg-gray-100 transition-colors"
           >
             <ArrowLeft className="w-6 h-6 text-gray-600" />
           </button>
-          <span className="ml-2 font-bold text-gray-800">食谱详情</span>
+          <span className="font-bold text-gray-800">食谱详情</span>
+          <button
+            onClick={() => toggleFavoriteMeal(mealId)}
+            className="p-2 rounded-full hover:bg-gray-100 transition-colors"
+          >
+            <Heart className={`w-6 h-6 ${isFavorite ? 'text-red-500 fill-red-500' : 'text-gray-400'}`} />
+          </button>
         </div>
       </div>
 
@@ -131,10 +145,15 @@ export function MealDetail({ mealId, onNavigate }: MealDetailProps) {
 
           <button 
             onClick={handleRecordMeal}
-            className="w-full bg-gradient-to-r from-primary-500 to-primary-400 text-white rounded-2xl py-3.5 font-bold shadow-soft hover:shadow-hover transition-all flex items-center justify-center gap-2"
+            className={`w-full rounded-2xl py-3.5 font-bold shadow-soft hover:shadow-hover transition-all flex items-center justify-center gap-2 ${
+              hasRecorded 
+                ? 'bg-gray-300 text-gray-500 cursor-not-allowed' 
+                : 'bg-gradient-to-r from-primary-500 to-primary-400 text-white'
+            }`}
+            disabled={hasRecorded}
           >
             <CheckCircle className="w-5 h-5" />
-            记录饮食
+            {hasRecorded ? '已添加到今日饮食' : '记录饮食'}
           </button>
         </div>
       </div>

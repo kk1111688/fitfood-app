@@ -91,3 +91,22 @@ export interface Stat {
   icon: string;
   color: 'primary' | 'healthy' | 'blue' | 'purple' | 'orange';
 }
+
+export interface WorkoutRecord {
+  id: string;
+  date: string;
+  planId?: string;
+  planName: string;
+  duration: number;
+  caloriesBurned: number;
+  exercisesCompleted: number;
+  totalSets: number;
+  totalReps: number;
+  notes?: string;
+}
+
+export interface WeightRecord {
+  date: string;
+  weight: number;
+  bmi: number;
+}

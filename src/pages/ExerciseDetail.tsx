@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { ArrowLeft, Clock, Flame, Dumbbell, Target, CheckCircle } from 'lucide-react';
+import { ArrowLeft, Clock, Flame, Dumbbell, Target, CheckCircle, Heart } from 'lucide-react';
 import { exercises } from '../data/exercises';
 import { WorkoutSession } from './WorkoutSession';
 import { Exercise } from '../types';
+import { useAppStore } from '../store/appStore';
 
 interface ExerciseDetailProps {
   exerciseId: string;
@@ -24,6 +25,8 @@ const difficultyColors = {
 export function ExerciseDetail({ exerciseId, onNavigate }: ExerciseDetailProps) {
   const [isWorkingOut, setIsWorkingOut] = useState(false);
   const exercise = exercises.find(e => e.id === exerciseId);
+  const { favoriteExercises, toggleFavoriteExercise } = useAppStore();
+  const isFavorite = favoriteExercises.includes(exerciseId);
 
   if (!exercise) {
     return (
@@ -39,6 +42,7 @@ export function ExerciseDetail({ exerciseId, onNavigate }: ExerciseDetailProps) 
       <WorkoutSession
         exercises={exerciseList}
         planName={exercise.name}
+        planId={`single-${exercise.id}`}
         onComplete={() => {
           setIsWorkingOut(false);
           onNavigate('exercises');
@@ -51,14 +55,20 @@ export function ExerciseDetail({ exerciseId, onNavigate }: ExerciseDetailProps) 
   return (
     <div className="min-h-screen bg-white pb-20">
       <div className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm shadow-sm">
-        <div className="max-w-md mx-auto px-4 h-14 flex items-center">
+        <div className="max-w-md mx-auto px-4 h-14 flex items-center justify-between">
           <button
             onClick={() => onNavigate('exercises')}
             className="p-2 rounded-full hover:bg-gray-100 transition-colors"
           >
             <ArrowLeft className="w-6 h-6 text-gray-600" />
           </button>
-          <span className="ml-2 font-bold text-gray-800">动作详情</span>
+          <span className="font-bold text-gray-800">动作详情</span>
+          <button
+            onClick={() => toggleFavoriteExercise(exerciseId)}
+            className="p-2 rounded-full hover:bg-gray-100 transition-colors"
+          >
+            <Heart className={`w-6 h-6 ${isFavorite ? 'text-red-500 fill-red-500' : 'text-gray-400'}`} />
+          </button>
         </div>
       </div>
 
