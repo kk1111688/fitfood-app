@@ -110,3 +110,39 @@ export interface WeightRecord {
   weight: number;
   bmi: number;
 }
+
+export interface CommunityUser {
+  id: string;
+  name: string;
+  avatar: string;
+  bio?: string;
+  followers?: number;
+  following?: number;
+}
+
+export interface Post {
+  id: string;
+  userId: string;
+  content: string;
+  images?: string[];
+  likes: number;
+  comments: Comment[];
+  createdAt: string;
+  tags?: string[];
+  type?: 'workout' | 'meal' | 'tip' | 'progress';
+}
+
+export interface Comment {
+  id: string;
+  userId: string;
+  content: string;
+  createdAt: string;
+  likes: number;
+}
+
+export interface Topic {
+  id: string;
+  title: string;
+  posts: number;
+  icon: string;
+}

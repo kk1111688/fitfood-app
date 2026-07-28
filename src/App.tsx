@@ -12,11 +12,13 @@ import { Profile } from './pages/Profile';
 import { EditProfile } from './pages/EditProfile';
 import { History } from './pages/History';
 import { Favorites } from './pages/Favorites';
+import { Community } from './pages/Community';
 
 type Page = 
   | 'home' 
   | 'exercises' 
   | `exercise/${string}` 
+  | 'community'
   | 'meals' 
   | `meal/${string}` 
   | 'plans' 
@@ -47,6 +49,8 @@ function App() {
         return <Home onNavigate={handleNavigate} />;
       case 'exercises':
         return <Exercises onNavigate={handleNavigate} />;
+      case 'community':
+        return <Community />;
       case 'meals':
         return <Meals onNavigate={handleNavigate} />;
       case 'plans':
