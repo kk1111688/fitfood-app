@@ -324,9 +324,9 @@ export function Home({ onNavigate }: HomeProps) {
       </div>
 
       {showCalorieModal && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-end" onClick={() => setShowCalorieModal(false)}>
-          <div className="bg-white w-full rounded-t-3xl p-6" onClick={(e) => e.stopPropagation()}>
-            <div className="flex items-center justify-between mb-4">
+        <div className="fixed inset-0 bg-black/50 z-[60] flex items-center justify-center px-4" onClick={() => setShowCalorieModal(false)}>
+          <div className="bg-white w-full max-w-sm rounded-3xl p-5 shadow-xl" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center justify-between mb-3">
               <h3 className="text-lg font-bold text-gray-800">
                 {calorieType === 'burned' ? '添加消耗卡路里' : '添加摄入卡路里'}
               </h3>
@@ -334,7 +334,7 @@ export function Home({ onNavigate }: HomeProps) {
                 <X className="w-5 h-5 text-gray-400" />
               </button>
             </div>
-            <div className="flex gap-2 mb-4">
+            <div className="flex gap-2 mb-3">
               <button
                 onClick={() => setCalorieType('burned')}
                 className={`flex-1 py-2 rounded-xl text-sm font-medium ${calorieType === 'burned' ? 'bg-orange-100 text-orange-600' : 'bg-gray-100 text-gray-500'}`}
@@ -348,8 +348,7 @@ export function Home({ onNavigate }: HomeProps) {
                 🍎 摄入
               </button>
             </div>
-            <div className="mb-4">
-              <label className="text-sm text-gray-600 mb-2 block">卡路里数值</label>
+            <div className="mb-3">
               <input
                 type="number"
                 value={calorieInput}
@@ -382,17 +381,16 @@ export function Home({ onNavigate }: HomeProps) {
       )}
 
       {showWaterModal && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-end" onClick={() => setShowWaterModal(false)}>
-          <div className="bg-white w-full rounded-t-3xl p-6" onClick={(e) => e.stopPropagation()}>
-            <div className="flex items-center justify-between mb-4">
+        <div className="fixed inset-0 bg-black/50 z-[60] flex items-center justify-center px-4" onClick={() => setShowWaterModal(false)}>
+          <div className="bg-white w-full max-w-sm rounded-3xl p-5 shadow-xl" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center justify-between mb-3">
               <h3 className="text-lg font-bold text-gray-800">记录饮水量</h3>
               <button onClick={() => setShowWaterModal(false)} className="p-1">
                 <X className="w-5 h-5 text-gray-400" />
               </button>
             </div>
-            <div className="mb-4">
+            <div className="mb-3">
               <p className="text-sm text-gray-600 mb-2">当前已饮 {todayLog.water}ml</p>
-              <label className="text-sm text-gray-600 mb-2 block">添加饮水量 (ml)</label>
               <input
                 type="number"
                 value={waterInput}
@@ -425,17 +423,16 @@ export function Home({ onNavigate }: HomeProps) {
       )}
 
       {showSleepModal && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-end" onClick={() => setShowSleepModal(false)}>
-          <div className="bg-white w-full rounded-t-3xl p-6" onClick={(e) => e.stopPropagation()}>
-            <div className="flex items-center justify-between mb-4">
+        <div className="fixed inset-0 bg-black/50 z-[60] flex items-center justify-center px-4" onClick={() => setShowSleepModal(false)}>
+          <div className="bg-white w-full max-w-sm rounded-3xl p-5 shadow-xl" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center justify-between mb-3">
               <h3 className="text-lg font-bold text-gray-800">记录睡眠时长</h3>
               <button onClick={() => setShowSleepModal(false)} className="p-1">
                 <X className="w-5 h-5 text-gray-400" />
               </button>
             </div>
-            <div className="mb-4">
+            <div className="mb-3">
               <p className="text-sm text-gray-600 mb-2">当前睡眠 {todayLog.sleep} 小时</p>
-              <label className="text-sm text-gray-600 mb-2 block">设置睡眠时长 (小时)</label>
               <input
                 type="number"
                 step="0.5"
