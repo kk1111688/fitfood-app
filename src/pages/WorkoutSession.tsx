@@ -20,7 +20,7 @@ export function WorkoutSession({ exercises, planName, planId, onComplete, onBack
   const [totalCalories, setTotalCalories] = useState(0);
   const [totalDuration, setTotalDuration] = useState(0);
   const [startTime] = useState(Date.now());
-  const { addWorkoutRecord, updateCalories } = useAppStore();
+  const { addWorkoutRecord } = useAppStore();
 
   const currentExercise = exercises[currentIndex];
   const totalExercises = exercises.length;
@@ -81,7 +81,6 @@ export function WorkoutSession({ exercises, planName, planId, onComplete, onBack
       totalReps: exercises.reduce((sum, ex) => sum + parseInt(ex.reps), 0),
     };
     addWorkoutRecord(record);
-    updateCalories(Math.round(totalCalories), 0);
     onComplete();
   };
 

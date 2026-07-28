@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ArrowLeft, Clock, Flame, Utensils, CheckCircle, Leaf, Heart } from 'lucide-react';
+import { ArrowLeft, Clock, Flame, Utensils, CheckCircle, Leaf, Heart, Trash2, Minus } from 'lucide-react';
 import { meals } from '../data/meals';
 import { categoryMap } from '../data/meals';
 import { useAppStore } from '../store/appStore';
@@ -18,13 +18,26 @@ const categoryColors = {
 
 export function MealDetail({ mealId, onNavigate }: MealDetailProps) {
   const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
   const meal = meals.find(m => m.id === mealId);
-  const { favoriteMeals, toggleFavoriteMeal, addMeal, todayLog } = useAppStore();
+  const { favoriteMeals, toggleFavoriteMeal, addMeal, removeMeal, addCaloriesConsumed, todayLog } = useAppStore();
   const isFavorite = favoriteMeals.includes(mealId);
 
   const handleRecordMeal = () => {
     if (meal) {
-      addMeal(meal.id, 1);
+      addMeal(meal.id, 1, meal.calories);
+      setToastMessage(`已添加 ${meal.calories} 卡到今日饮食`);
+      setShowToast(true);
+      setTimeout(() => {
+        setShowToast(false);
+      }, 2000);
+    }
+  };
+
+  const handleRemoveMeal = () => {
+    if (meal) {
+      removeMeal(meal.id);
+      setToastMessage(`已从今日饮食移除`);
       setShowToast(true);
       setTimeout(() => {
         setShowToast(false);
@@ -143,25 +156,35 @@ export function MealDetail({ mealId, onNavigate }: MealDetailProps) {
             </div>
           </div>
 
-          <button 
-            onClick={handleRecordMeal}
-            className={`w-full rounded-2xl py-3.5 font-bold shadow-soft hover:shadow-hover transition-all flex items-center justify-center gap-2 ${
-              hasRecorded 
-                ? 'bg-gray-300 text-gray-500 cursor-not-allowed' 
-                : 'bg-gradient-to-r from-primary-500 to-primary-400 text-white'
-            }`}
-            disabled={hasRecorded}
-          >
-            <CheckCircle className="w-5 h-5" />
-            {hasRecorded ? '已添加到今日饮食' : '记录饮食'}
-          </button>
+          {hasRecorded ? (
+            <div className="flex gap-3 mb-6">
+              <div className="flex-1 bg-healthy-50 text-healthy-600 rounded-2xl py-3 text-center font-semibold">
+                ✓ 已添加 {meal.calories} 卡
+              </div>
+              <button 
+                onClick={handleRemoveMeal}
+                className="bg-red-50 text-red-500 rounded-2xl py-3 px-4 font-bold flex items-center gap-2 hover:bg-red-100 transition-colors"
+              >
+                <Minus className="w-5 h-5" />
+                移除
+              </button>
+            </div>
+          ) : (
+            <button 
+              onClick={handleRecordMeal}
+              className="w-full rounded-2xl py-3.5 font-bold shadow-soft hover:shadow-hover transition-all flex items-center justify-center gap-2 bg-gradient-to-r from-primary-500 to-primary-400 text-white mb-6"
+            >
+              <CheckCircle className="w-5 h-5" />
+              记录饮食 (+{meal.calories}卡)
+            </button>
+          )}
         </div>
       </div>
 
       {showToast && (
         <div className="fixed bottom-20 left-1/2 -translate-x-1/2 bg-gray-900 text-white px-6 py-3 rounded-full shadow-lg z-50 flex items-center gap-2 animate-bounce">
           <CheckCircle className="w-5 h-5 text-healthy-400" />
-          <span>已添加到今日饮食</span>
+          <span>{toastMessage}</span>
         </div>
       )}
     </div>

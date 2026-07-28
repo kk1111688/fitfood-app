@@ -15,9 +15,13 @@ interface AppStore {
   updateUser: (data: Partial<UserProfile>) => void;
   updateWater: (water: number) => void;
   updateSleep: (sleep: number) => void;
-  updateCalories: (burned: number, consumed: number) => void;
+  setCaloriesBurned: (calories: number) => void;
+  setCaloriesConsumed: (calories: number) => void;
+  addCaloriesBurned: (calories: number) => void;
+  addCaloriesConsumed: (calories: number) => void;
   addExercise: (exerciseId: string, sets: number, reps: number) => void;
-  addMeal: (mealId: string, servings: number) => void;
+  addMeal: (mealId: string, servings: number, calories?: number) => void;
+  removeMeal: (mealId: string) => void;
   resetTodayLog: () => void;
   toggleFavoriteExercise: (exerciseId: string) => void;
   toggleFavoriteMeal: (mealId: string) => void;
@@ -27,7 +31,7 @@ interface AppStore {
 
 export const useAppStore = create<AppStore>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       user: userProfile,
       todayLog: todayLog,
       activeTab: 'home',
@@ -39,11 +43,22 @@ export const useAppStore = create<AppStore>()(
       updateUser: (data) => set((state) => ({ user: { ...state.user, ...data } })),
       updateWater: (water) => set((state) => ({ todayLog: { ...state.todayLog, water } })),
       updateSleep: (sleep) => set((state) => ({ todayLog: { ...state.todayLog, sleep } })),
-      updateCalories: (burned, consumed) => set((state) => ({
-        todayLog: {
-          ...state.todayLog,
-          caloriesBurned: burned,
-          caloriesConsumed: consumed
+      setCaloriesBurned: (calories) => set((state) => ({
+        todayLog: { ...state.todayLog, caloriesBurned: calories }
+      })),
+      setCaloriesConsumed: (calories) => set((state) => ({
+        todayLog: { ...state.todayLog, caloriesConsumed: calories }
+      })),
+      addCaloriesBurned: (calories) => set((state) => ({
+        todayLog: { 
+          ...state.todayLog, 
+          caloriesBurned: state.todayLog.caloriesBurned + calories 
+        }
+      })),
+      addCaloriesConsumed: (calories) => set((state) => ({
+        todayLog: { 
+          ...state.todayLog, 
+          caloriesConsumed: state.todayLog.caloriesConsumed + calories 
         }
       })),
       addExercise: (exerciseId, sets, reps) => set((state) => ({
@@ -52,12 +67,31 @@ export const useAppStore = create<AppStore>()(
           exercises: [...state.todayLog.exercises, { exerciseId, sets, reps }]
         }
       })),
-      addMeal: (mealId, servings) => set((state) => ({
-        todayLog: {
-          ...state.todayLog,
-          meals: [...state.todayLog.meals, { mealId, servings }]
+      addMeal: (mealId, servings, calories) => set((state) => {
+        const meal = state.todayLog.meals.find(m => m.mealId === mealId);
+        if (meal) {
+          return state;
         }
-      })),
+        return {
+          todayLog: {
+            ...state.todayLog,
+            meals: [...state.todayLog.meals, { mealId, servings }],
+            caloriesConsumed: calories 
+              ? state.todayLog.caloriesConsumed + calories 
+              : state.todayLog.caloriesConsumed
+          }
+        };
+      }),
+      removeMeal: (mealId) => set((state) => {
+        const meal = state.todayLog.meals.find(m => m.mealId === mealId);
+        if (!meal) return state;
+        return {
+          todayLog: {
+            ...state.todayLog,
+            meals: state.todayLog.meals.filter(m => m.mealId !== mealId)
+          }
+        };
+      }),
       resetTodayLog: () => set({ todayLog: { ...todayLog } }),
       toggleFavoriteExercise: (exerciseId) => set((state) => ({
         favoriteExercises: state.favoriteExercises.includes(exerciseId)
@@ -78,6 +112,10 @@ export const useAppStore = create<AppStore>()(
           streak: record.date === new Date(Date.now() - 86400000).toDateString() 
             ? state.user.streak + 1 
             : 1
+        },
+        todayLog: {
+          ...state.todayLog,
+          caloriesBurned: state.todayLog.caloriesBurned + record.caloriesBurned
         }
       })),
       addWeightRecord: (weight) => set((state) => {
