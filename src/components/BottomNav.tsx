@@ -1,4 +1,4 @@
-import { Home, Dumbbell, Utensils, Users, User } from 'lucide-react';
+import { Home, Dumbbell, Utensils, Users, User, Calendar } from 'lucide-react';
 
 interface BottomNavProps {
   activeTab: string;
@@ -8,8 +8,9 @@ interface BottomNavProps {
 const tabs = [
   { id: 'home', label: '首页', icon: Home },
   { id: 'exercises', label: '动作', icon: Dumbbell },
-  { id: 'community', label: '社区', icon: Users },
+  { id: 'plans', label: '计划', icon: Calendar },
   { id: 'meals', label: '食谱', icon: Utensils },
+  { id: 'community', label: '社区', icon: Users },
   { id: 'profile', label: '我的', icon: User },
 ];
 
@@ -20,7 +21,7 @@ export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
         {tabs.map((tab) => {
           const Icon = tab.icon;
           const isActive = activeTab === tab.id;
-          const isCenter = tab.id === 'community';
+          const isCenter = tab.id === 'plans';
           return (
             <button
               key={tab.id}
