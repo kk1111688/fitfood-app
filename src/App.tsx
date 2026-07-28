@@ -14,6 +14,7 @@ import { EditProfile } from './pages/EditProfile';
 import { History } from './pages/History';
 import { Favorites } from './pages/Favorites';
 import { Community } from './pages/Community';
+import { CalorieTester } from './pages/CalorieTester';
 
 type Page = 
   | 'home' 
@@ -23,6 +24,7 @@ type Page =
   | 'meals' 
   | `meal/${string}` 
   | 'ingredient-recipe'
+  | 'calorie-tester'
   | 'plans' 
   | `plan/${string}` 
   | 'workout' 
@@ -42,6 +44,7 @@ function App() {
     if (currentPage.startsWith('exercise/')) return 'exercises';
     if (currentPage.startsWith('meal/')) return 'meals';
     if (currentPage === 'ingredient-recipe') return 'meals';
+    if (currentPage === 'calorie-tester') return 'meals';
     if (currentPage.startsWith('plan/')) return 'plans';
     return currentPage;
   };
@@ -58,6 +61,8 @@ function App() {
         return <Meals onNavigate={handleNavigate} />;
       case 'ingredient-recipe':
         return <IngredientRecipe onNavigate={handleNavigate} />;
+      case 'calorie-tester':
+        return <CalorieTester onNavigate={handleNavigate} />;
       case 'plans':
         return <Plans onNavigate={handleNavigate} />;
       case 'profile':

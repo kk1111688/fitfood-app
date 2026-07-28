@@ -9,7 +9,7 @@ export const workoutPlans: WorkoutPlan[] = [
     exercises: ['1', '2', '8', '10'],
     calories: 300,
     level: 'beginner',
-    imageUrl: 'https://picsum.photos/seed/beginner/400/300'
+    imageUrl: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=300&fit=crop'
   },
   {
     id: '2',
@@ -19,7 +19,7 @@ export const workoutPlans: WorkoutPlan[] = [
     exercises: ['4', '5', '6', '11'],
     calories: 450,
     level: 'intermediate',
-    imageUrl: 'https://picsum.photos/seed/muscle/400/300'
+    imageUrl: 'https://images.unsplash.com/photo-1532029837206-abbe2b7620e3?w=400&h=300&fit=crop'
   },
   {
     id: '3',
@@ -29,7 +29,7 @@ export const workoutPlans: WorkoutPlan[] = [
     exercises: ['7', '9', '15'],
     calories: 400,
     level: 'intermediate',
-    imageUrl: 'https://picsum.photos/seed/burn/400/300'
+    imageUrl: 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=400&h=300&fit=crop'
   },
   {
     id: '4',
@@ -39,7 +39,7 @@ export const workoutPlans: WorkoutPlan[] = [
     exercises: ['8', '9', '10'],
     calories: 200,
     level: 'beginner',
-    imageUrl: 'https://picsum.photos/seed/core/400/300'
+    imageUrl: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400&h=300&fit=crop'
   },
   {
     id: '5',
@@ -49,7 +49,7 @@ export const workoutPlans: WorkoutPlan[] = [
     exercises: ['3', '4', '5', '6'],
     calories: 500,
     level: 'advanced',
-    imageUrl: 'https://picsum.photos/seed/advanced/400/300'
+    imageUrl: 'https://images.unsplash.com/photo-1533560904424-a0c61dc306fc?w=400&h=300&fit=crop'
   },
   {
     id: '6',
@@ -59,7 +59,7 @@ export const workoutPlans: WorkoutPlan[] = [
     exercises: ['1', '2', '8', '9', '10'],
     calories: 280,
     level: 'beginner',
-    imageUrl: 'https://picsum.photos/seed/home/400/300'
+    imageUrl: 'https://images.unsplash.com/photo-1540206276207-3af25c089d36?w=400&h=300&fit=crop'
   }
 ];
 
