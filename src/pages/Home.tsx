@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useAppStore } from '../store/appStore';
-import { Flame, Droplets, Moon, Activity, TrendingUp, ArrowRight, Dumbbell, Utensils, Heart, Award, Plus, Minus, X, Zap } from 'lucide-react';
+import { Flame, Droplets, Moon, Activity, TrendingUp, ArrowRight, Dumbbell, Utensils, Heart, Award, Plus, Minus, X, Zap, CheckCircle } from 'lucide-react';
 import { exercises } from '../data/exercises';
 import { meals } from '../data/meals';
 import { workoutPlans as plans } from '../data/plans';
@@ -10,7 +10,7 @@ interface HomeProps {
 }
 
 export function Home({ onNavigate }: HomeProps) {
-  const { user, todayLog, workoutHistory, addCaloriesBurned, addCaloriesConsumed, updateWater, updateSleep } = useAppStore();
+  const { user, todayLog, workoutHistory, addCaloriesBurned, addCaloriesConsumed, updateWater, updateSleep, lastCheckInDate, checkIn } = useAppStore();
   const [showCalorieModal, setShowCalorieModal] = useState(false);
   const [calorieInput, setCalorieInput] = useState('');
   const [calorieType, setCalorieType] = useState<'burned' | 'consumed'>('burned');
@@ -18,6 +18,17 @@ export function Home({ onNavigate }: HomeProps) {
   const [waterInput, setWaterInput] = useState('');
   const [showSleepModal, setShowSleepModal] = useState(false);
   const [sleepInput, setSleepInput] = useState('');
+  const [showCheckInSuccess, setShowCheckInSuccess] = useState(false);
+
+  const hasCheckedInToday = lastCheckInDate === new Date().toDateString();
+
+  const handleCheckIn = () => {
+    const success = checkIn();
+    if (success) {
+      setShowCheckInSuccess(true);
+      setTimeout(() => setShowCheckInSuccess(false), 2000);
+    }
+  };
 
   const todayWaterGoal = 2000;
   const waterProgress = (todayLog.water / todayWaterGoal) * 100;
@@ -141,6 +152,39 @@ export function Home({ onNavigate }: HomeProps) {
       </div>
 
       <div className="px-4 -mt-4">
+        <div className="bg-white rounded-2xl p-4 shadow-card mb-3">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className={`w-12 h-12 rounded-full flex items-center justify-center ${hasCheckedInToday ? 'bg-healthy-100' : 'bg-primary-100'}`}>
+                {hasCheckedInToday ? (
+                  <CheckCircle className="w-6 h-6 text-healthy-500" />
+                ) : (
+                  <Flame className="w-6 h-6 text-primary-500" />
+                )}
+              </div>
+              <div>
+                <p className="font-bold text-gray-800">
+                  {hasCheckedInToday ? '今日已打卡' : '今日未打卡'}
+                </p>
+                <p className="text-xs text-gray-500">
+                  已连续打卡 {user.streak} 天 🔥
+                </p>
+              </div>
+            </div>
+            <button
+              onClick={handleCheckIn}
+              disabled={hasCheckedInToday}
+              className={`px-5 py-2.5 rounded-xl font-bold text-sm transition-all ${
+                hasCheckedInToday
+                  ? 'bg-gray-100 text-gray-400'
+                  : 'bg-gradient-to-r from-primary-500 to-primary-400 text-white shadow-lg hover:shadow-xl'
+              }`}
+            >
+              {hasCheckedInToday ? '已打卡 ✓' : '打卡'}
+            </button>
+          </div>
+        </div>
+
         <div className="grid grid-cols-2 gap-3">
           {stats.map((stat, index) => {
             const Icon = stat.icon;
@@ -463,6 +507,20 @@ export function Home({ onNavigate }: HomeProps) {
             >
               确认设置
             </button>
+          </div>
+        </div>
+      )}
+
+      {showCheckInSuccess && (
+        <div className="fixed inset-0 bg-black/50 z-[60] flex items-center justify-center px-4">
+          <div className="bg-white rounded-3xl p-6 max-w-sm w-full text-center">
+            <div className="w-16 h-16 bg-healthy-100 rounded-full flex items-center justify-center mx-auto mb-3">
+              <CheckCircle className="w-8 h-8 text-healthy-500" />
+            </div>
+            <h3 className="text-lg font-bold text-gray-800 mb-1">打卡成功！</h3>
+            <p className="text-sm text-gray-500">
+              已连续打卡 {user.streak} 天，继续加油！🔥
+            </p>
           </div>
         </div>
       )}

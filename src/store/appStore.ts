@@ -11,6 +11,7 @@ interface AppStore {
   favoriteMeals: string[];
   workoutHistory: WorkoutRecord[];
   weightHistory: WeightRecord[];
+  lastCheckInDate: string | null;
   setActiveTab: (tab: string) => void;
   updateUser: (data: Partial<UserProfile>) => void;
   updateWater: (water: number) => void;
@@ -27,6 +28,7 @@ interface AppStore {
   toggleFavoriteMeal: (mealId: string) => void;
   addWorkoutRecord: (record: WorkoutRecord) => void;
   addWeightRecord: (weight: number) => void;
+  checkIn: () => boolean;
 }
 
 export const useAppStore = create<AppStore>()(
@@ -39,6 +41,7 @@ export const useAppStore = create<AppStore>()(
       favoriteMeals: [],
       workoutHistory: [],
       weightHistory: [],
+      lastCheckInDate: null,
       setActiveTab: (tab) => set({ activeTab: tab }),
       updateUser: (data) => set((state) => ({ user: { ...state.user, ...data } })),
       updateWater: (water) => set((state) => ({ todayLog: { ...state.todayLog, water } })),
@@ -103,21 +106,46 @@ export const useAppStore = create<AppStore>()(
           ? state.favoriteMeals.filter(id => id !== mealId)
           : [...state.favoriteMeals, mealId]
       })),
-      addWorkoutRecord: (record) => set((state) => ({
-        workoutHistory: [record, ...state.workoutHistory],
-        user: {
-          ...state.user,
-          totalWorkouts: state.user.totalWorkouts + 1,
-          totalCaloriesBurned: state.user.totalCaloriesBurned + record.caloriesBurned,
-          streak: record.date === new Date(Date.now() - 86400000).toDateString() 
-            ? state.user.streak + 1 
-            : 1
-        },
-        todayLog: {
-          ...state.todayLog,
-          caloriesBurned: state.todayLog.caloriesBurned + record.caloriesBurned
+      addWorkoutRecord: (record) => set((state) => {
+        const today = new Date().toDateString();
+        const yesterday = new Date(Date.now() - 86400000).toDateString();
+        const lastWorkoutDate = state.workoutHistory[0]?.date;
+        let newStreak = state.user.streak;
+        if (lastWorkoutDate !== today && lastWorkoutDate !== yesterday) {
+          newStreak = 1;
+        } else if (lastWorkoutDate === yesterday) {
+          newStreak = state.user.streak + 1;
         }
-      })),
+        return {
+          workoutHistory: [record, ...state.workoutHistory],
+          user: {
+            ...state.user,
+            totalWorkouts: state.user.totalWorkouts + 1,
+            totalCaloriesBurned: state.user.totalCaloriesBurned + record.caloriesBurned,
+            streak: newStreak
+          },
+          todayLog: {
+            ...state.todayLog,
+            caloriesBurned: state.todayLog.caloriesBurned + record.caloriesBurned
+          }
+        };
+      }),
+      checkIn: () => {
+        const state = get();
+        const today = new Date().toDateString();
+        if (state.lastCheckInDate === today) {
+          return false;
+        }
+        const yesterday = new Date(Date.now() - 86400000).toDateString();
+        const newStreak = state.lastCheckInDate === yesterday
+          ? state.user.streak + 1
+          : 1;
+        set({
+          lastCheckInDate: today,
+          user: { ...state.user, streak: newStreak }
+        });
+        return true;
+      },
       addWeightRecord: (weight) => set((state) => {
         const newRecord: WeightRecord = {
           date: new Date().toISOString(),
