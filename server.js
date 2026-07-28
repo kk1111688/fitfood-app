@@ -1,4 +1,4 @@
-﻿const http = require("http"), fs = require("fs"), path = require("path");
+﻿﻿const http = require("http"), fs = require("fs"), path = require("path");
 const PORT = 3480;
 const TYPES = {".html":"text/html;charset=utf-8",".css":"text/css;charset=utf-8",".js":"application/javascript;charset=utf-8",".json":"application/json",".svg":"image/svg+xml",".png":"image/png",".ico":"image/x-icon"};
 const ROOT = __dirname;
