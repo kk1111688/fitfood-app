@@ -47,20 +47,22 @@ export function Profile({ onNavigate }: ProfileProps) {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-healthy-50 pb-20">
-      <div className="bg-gradient-to-r from-primary-500 to-primary-400 text-white px-4 pt-16 pb-8">
-        <div className="flex items-center justify-between mb-6">
+    <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-healthy-50 pb-28">
+      <div className="relative overflow-hidden bg-gradient-to-br from-primary-500 via-primary-400 to-emerald-400 text-white px-4 pt-14 pb-8">
+        <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/3" />
+        
+        <div className="relative flex items-center justify-between mb-5">
           <h1 className="text-xl font-bold">个人中心</h1>
           <button
             onClick={() => onNavigate('edit-profile')}
-            className="p-2 rounded-full bg-white/20 hover:bg-white/30 transition-colors"
+            className="p-2 rounded-full bg-white/25 backdrop-blur-sm hover:bg-white/35 transition-all active:scale-95"
           >
             <Settings className="w-5 h-5" />
           </button>
         </div>
         
-        <div className="flex items-center gap-4">
-          <div className="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center">
+        <div className="relative flex items-center gap-4">
+          <div className="w-20 h-20 bg-white/25 backdrop-blur-sm rounded-full flex items-center justify-center border-2 border-white/40">
             <User className="w-10 h-10 text-white" />
           </div>
           <div className="flex-1">
@@ -70,7 +72,7 @@ export function Profile({ onNavigate }: ProfileProps) {
           </div>
           <button
             onClick={() => onNavigate('edit-profile')}
-            className="p-2 rounded-full bg-white/20 hover:bg-white/30 transition-colors"
+            className="p-2 rounded-full bg-white/25 backdrop-blur-sm hover:bg-white/35 transition-all active:scale-95"
           >
             <Edit3 className="w-5 h-5" />
           </button>

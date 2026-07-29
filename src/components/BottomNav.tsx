@@ -16,35 +16,43 @@ const tabs = [
 
 export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-100">
-      <div className="max-w-md mx-auto flex items-center justify-around h-14">
-        {tabs.map((tab) => {
-          const Icon = tab.icon;
-          const isActive = activeTab === tab.id;
-          const isCenter = tab.id === 'plans';
-          return (
-            <button
-              key={tab.id}
-              onClick={() => onTabChange(tab.id)}
-              className={`flex flex-col items-center justify-center w-full h-full transition-colors ${
-                isCenter
-                  ? isActive 
-                    ? 'text-primary-600' 
-                    : 'text-gray-400'
-                  : isActive 
-                    ? 'text-primary-600' 
-                    : 'text-gray-400'
-              }`}
-            >
-              <div className={`relative ${isCenter ? '-mt-5' : ''}`}>
-                <div className={`w-10 h-10 rounded-full flex items-center justify-center ${isCenter ? 'bg-gradient-to-br from-primary-500 to-primary-400' : ''} ${isCenter && !isActive ? 'bg-gray-100' : ''}`}>
-                  <Icon className={`w-5 h-5 transition-transform ${isActive ? 'scale-110' : ''} ${isCenter ? 'text-white' : ''}`} />
+    <nav className="fixed bottom-0 left-0 right-0 z-50 pointer-events-none">
+      <div className="max-w-md mx-auto px-4 pb-3 pt-2 pointer-events-auto">
+        <div className="bg-white/85 backdrop-blur-xl rounded-3xl shadow-[0_8px_32px_rgba(20,184,166,0.18)] border border-white/60 flex items-center justify-around h-16 px-2">
+          {tabs.map((tab) => {
+            const Icon = tab.icon;
+            const isActive = activeTab === tab.id;
+
+            return (
+              <button
+                key={tab.id}
+                onClick={() => onTabChange(tab.id)}
+                className="flex flex-col items-center justify-center flex-1 h-full transition-transform active:scale-90"
+                aria-label={tab.label}
+              >
+                <div
+                  className={`relative flex items-center justify-center px-3 py-1.5 rounded-full transition-all duration-300 ${
+                    isActive ? 'bg-primary-50' : ''
+                  }`}
+                >
+                  <Icon
+                    className={`w-5 h-5 transition-colors ${
+                      isActive ? 'text-primary-600' : 'text-gray-400'
+                    }`}
+                    strokeWidth={isActive ? 2.4 : 2}
+                  />
                 </div>
-              </div>
-              <span className={`text-xs font-medium mt-0.5 ${isActive ? 'font-semibold' : ''}`}>{tab.label}</span>
-            </button>
-          );
-        })}
+                <span
+                  className={`text-[10px] mt-0.5 transition-colors ${
+                    isActive ? 'text-primary-600 font-semibold' : 'text-gray-400'
+                  }`}
+                >
+                  {tab.label}
+                </span>
+              </button>
+            );
+          })}
+        </div>
       </div>
     </nav>
   );

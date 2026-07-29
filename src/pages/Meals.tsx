@@ -27,17 +27,17 @@ export function Meals({ onNavigate }: MealsProps) {
   });
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-healthy-50 pb-20">
-      <div className="bg-white shadow-sm sticky top-0 z-40">
-        <div className="px-4 pt-16 pb-4">
+    <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-healthy-50 pb-28">
+      <div className="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-40">
+        <div className="px-4 pt-14 pb-4">
           <h1 className="text-xl font-bold text-gray-800 mb-4">食谱库</h1>
           
           <div className="grid grid-cols-2 gap-3 mb-4">
             <button
               onClick={() => onNavigate('ingredient-recipe')}
-              className="bg-gradient-to-br from-primary-500 to-primary-400 rounded-2xl p-3 text-white flex items-center gap-2 shadow-lg hover:shadow-xl transition-shadow"
+              className="bg-gradient-to-br from-primary-500 to-emerald-500 rounded-2xl p-3 text-white flex items-center gap-2 shadow-lg shadow-primary-500/20 hover:shadow-xl transition-all active:scale-[0.98]"
             >
-              <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center flex-shrink-0">
+              <div className="w-10 h-10 bg-white/25 rounded-xl flex items-center justify-center flex-shrink-0">
                 <Sparkles className="w-5 h-5" />
               </div>
               <div className="text-left flex-1 min-w-0">
@@ -51,9 +51,9 @@ export function Meals({ onNavigate }: MealsProps) {
 
             <button
               onClick={() => onNavigate('calorie-tester')}
-              className="bg-gradient-to-br from-orange-500 to-orange-400 rounded-2xl p-3 text-white flex items-center gap-2 shadow-lg hover:shadow-xl transition-shadow"
+              className="bg-gradient-to-br from-orange-500 to-red-400 rounded-2xl p-3 text-white flex items-center gap-2 shadow-lg shadow-orange-500/20 hover:shadow-xl transition-all active:scale-[0.98]"
             >
-              <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center flex-shrink-0">
+              <div className="w-10 h-10 bg-white/25 rounded-xl flex items-center justify-center flex-shrink-0">
                 <Calculator className="w-5 h-5" />
               </div>
               <div className="text-left flex-1 min-w-0">
@@ -67,23 +67,23 @@ export function Meals({ onNavigate }: MealsProps) {
           </div>
 
           <div className="relative mb-4">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
             <input
               type="text"
               placeholder="搜索食谱..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-gray-100 rounded-xl pl-10 pr-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary-200"
+              className="w-full bg-gray-100/80 rounded-2xl pl-10 pr-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary-300 transition-all"
             />
           </div>
-          <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-hide">
+          <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-hide">
             {mealCategories.map((category) => (
               <button
                 key={category}
                 onClick={() => setSelectedCategory(category)}
                 className={`px-4 py-1.5 rounded-full text-sm font-medium whitespace-nowrap transition-all ${
                   selectedCategory === category
-                    ? 'bg-primary-500 text-white'
+                    ? 'bg-gradient-to-r from-primary-500 to-emerald-500 text-white shadow-md shadow-primary-500/20'
                     : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                 }`}
               >

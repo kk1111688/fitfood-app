@@ -24,18 +24,18 @@ export function Plans({ onNavigate }: PlansProps) {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-healthy-50 pb-20">
-      <div className="bg-white shadow-sm sticky top-0 z-40">
-        <div className="px-4 pt-16 pb-4">
+    <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-healthy-50 pb-28">
+      <div className="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-40">
+        <div className="px-4 pt-14 pb-4">
           <h1 className="text-xl font-bold text-gray-800 mb-4">训练计划</h1>
-          <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-hide">
+          <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-hide">
             {levels.map((level) => (
               <button
                 key={level}
                 onClick={() => setSelectedLevel(level)}
                 className={`px-4 py-1.5 rounded-full text-sm font-medium whitespace-nowrap transition-all ${
                   selectedLevel === level
-                    ? 'bg-primary-500 text-white'
+                    ? 'bg-gradient-to-r from-primary-500 to-emerald-500 text-white shadow-md shadow-primary-500/20'
                     : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                 }`}
               >

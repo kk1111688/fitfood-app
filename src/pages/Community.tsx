@@ -113,16 +113,16 @@ export function Community() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-20">
-      <div className="bg-white shadow-sm sticky top-0 z-40">
-        <div className="px-4 pt-12 pb-3">
+    <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-healthy-50 pb-28">
+      <div className="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-40">
+        <div className="px-4 pt-14 pb-3">
           <h1 className="text-xl font-bold text-gray-800 mb-3">社区</h1>
           <div className="flex gap-2">
             <button
               onClick={() => setActiveTab('feed')}
               className={`flex-1 py-2 rounded-xl text-sm font-medium transition-all ${
                 activeTab === 'feed'
-                  ? 'bg-primary-500 text-white'
+                  ? 'bg-gradient-to-r from-primary-500 to-emerald-500 text-white shadow-md shadow-primary-500/20'
                   : 'bg-gray-100 text-gray-600'
               }`}
             >
@@ -132,7 +132,7 @@ export function Community() {
               onClick={() => setActiveTab('topics')}
               className={`flex-1 py-2 rounded-xl text-sm font-medium transition-all ${
                 activeTab === 'topics'
-                  ? 'bg-primary-500 text-white'
+                  ? 'bg-gradient-to-r from-primary-500 to-emerald-500 text-white shadow-md shadow-primary-500/20'
                   : 'bg-gray-100 text-gray-600'
               }`}
             >
@@ -142,7 +142,7 @@ export function Community() {
               onClick={() => setActiveTab('users')}
               className={`flex-1 py-2 rounded-xl text-sm font-medium transition-all ${
                 activeTab === 'users'
-                  ? 'bg-primary-500 text-white'
+                  ? 'bg-gradient-to-r from-primary-500 to-emerald-500 text-white shadow-md shadow-primary-500/20'
                   : 'bg-gray-100 text-gray-600'
               }`}
             >
@@ -431,7 +431,7 @@ export function Community() {
 
       <button
         onClick={() => setShowPostModal(true)}
-        className="fixed bottom-24 right-4 w-14 h-14 bg-gradient-to-br from-primary-500 to-primary-400 rounded-full shadow-lg flex items-center justify-center text-white hover:shadow-xl transition-all z-40"
+        className="fixed bottom-24 right-4 w-14 h-14 bg-gradient-to-br from-primary-500 to-emerald-500 rounded-2xl shadow-elevated flex items-center justify-center text-white hover:shadow-xl transition-all z-40 active:scale-95"
       >
         <Send className="w-6 h-6" />
       </button>

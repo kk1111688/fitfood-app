@@ -46,7 +46,7 @@ export function IngredientRecipe({ onNavigate }: IngredientRecipeProps) {
 
   if (showResults) {
     return (
-      <div className="min-h-screen bg-gray-50 pb-20">
+      <div className="min-h-screen bg-gray-50 pb-28">
         <div className="bg-white sticky top-0 z-40 shadow-sm">
           <div className="px-4 h-14 flex items-center gap-3">
             <button
@@ -156,7 +156,7 @@ export function IngredientRecipe({ onNavigate }: IngredientRecipeProps) {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-20">
+    <div className="min-h-screen bg-gray-50 pb-28">
       <div className="bg-white sticky top-0 z-40 shadow-sm">
         <div className="px-4 h-14 flex items-center gap-3">
           <button
