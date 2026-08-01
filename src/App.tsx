@@ -106,7 +106,9 @@ function App() {
 
   return (
     <div className="max-w-md mx-auto bg-white min-h-screen relative">
-      {renderPage()}
+      <div key={currentPage} className="animate-page-in">
+        {renderPage()}
+      </div>
       {showBottomNav && <BottomNav activeTab={getActiveTab()} onTabChange={handleNavigate} />}
     </div>
   );

@@ -49,7 +49,7 @@ export function Plans({ onNavigate }: PlansProps) {
       <div className="px-4 py-4">
         <button
           onClick={() => onNavigate('weekly-plan')}
-          className="w-full mb-4 bg-gradient-to-r from-primary-500 to-healthy-400 rounded-2xl p-4 text-white flex items-center gap-3 shadow-lg hover:shadow-xl transition-shadow"
+          className="w-full mb-4 bg-gradient-to-r from-primary-500 to-healthy-400 rounded-2xl p-4 text-white flex items-center gap-3 shadow-lg hover:shadow-xl transition-shadow animate-stagger-1"
         >
           <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
             <Calendar className="w-6 h-6" />
@@ -64,7 +64,7 @@ export function Plans({ onNavigate }: PlansProps) {
           <ArrowRight className="w-5 h-5 text-white/80" />
         </button>
 
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center justify-between mb-4 animate-stagger-2">
           <span className="text-sm text-gray-500">共 {filteredPlans.length} 个计划</span>
           <button className="flex items-center gap-1 text-sm text-gray-500">
             <Filter className="w-4 h-4" />
@@ -72,7 +72,7 @@ export function Plans({ onNavigate }: PlansProps) {
           </button>
         </div>
 
-        <div className="space-y-4">
+        <div className="space-y-4 animate-stagger-3">
           {filteredPlans.map((plan) => (
             <PlanCard key={plan.id} plan={plan} onClick={() => onNavigate(`plan/${plan.id}`)} />
           ))}
@@ -85,7 +85,7 @@ export function Plans({ onNavigate }: PlansProps) {
         )}
       </div>
 
-      <div className="px-4 mt-6">
+      <div className="px-4 mt-6 animate-stagger-4">
         <div className="bg-white rounded-2xl p-4 shadow-card">
           <h3 className="font-bold text-gray-800 mb-3">今日完成情况</h3>
           <div className="space-y-3">

@@ -52,14 +52,14 @@ export function Exercises({ onNavigate }: ExercisesProps) {
       </div>
 
       <div className="px-4 py-4">
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center justify-between mb-4 animate-stagger-1">
           <span className="text-sm text-gray-500">共 {filteredExercises.length} 个动作</span>
           <button className="flex items-center gap-1 text-sm text-gray-500">
             <Filter className="w-4 h-4" />
             筛选
           </button>
         </div>
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-2 gap-3 animate-stagger-2">
           {filteredExercises.map((exercise) => (
             <ExerciseCard key={exercise.id} exercise={exercise} onClick={() => onNavigate(`exercise/${exercise.id}`)} />
           ))}

@@ -140,7 +140,7 @@ export function Home({ onNavigate }: HomeProps) {
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-healthy-50 pb-28">
       {/* 顶部区域 */}
-      <div className="relative overflow-hidden">
+      <div className="relative overflow-hidden animate-stagger-1">
         <div className="absolute inset-0 bg-gradient-to-br from-primary-500 via-primary-400 to-emerald-400 rounded-b-3xl" />
         <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/3" />
         <div className="absolute bottom-0 left-0 w-32 h-32 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/4" />
@@ -185,7 +185,7 @@ export function Home({ onNavigate }: HomeProps) {
       </div>
 
       {/* 打卡卡片 */}
-      <div className="px-4 -mt-5 relative z-10">
+      <div className="px-4 -mt-5 relative z-10 animate-stagger-2">
         <div className="bg-white rounded-2xl p-4 shadow-soft">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -221,7 +221,7 @@ export function Home({ onNavigate }: HomeProps) {
       </div>
 
       {/* 统计卡片网格 */}
-      <div className="px-4 mt-4">
+      <div className="px-4 mt-4 animate-stagger-3">
         <div className="grid grid-cols-2 gap-3">
           {stats.map((stat, index) => {
             const Icon = stat.icon;
@@ -267,7 +267,7 @@ export function Home({ onNavigate }: HomeProps) {
       </div>
 
       {/* 推荐训练计划 */}
-      <div className="px-4 mt-5">
+      <div className="px-4 mt-5 animate-stagger-4">
         <div className="flex items-center justify-between mb-3">
           <h3 className="font-bold text-gray-800 flex items-center gap-2">
             <Dumbbell className="w-4 h-4 text-primary-500" />
@@ -310,7 +310,7 @@ export function Home({ onNavigate }: HomeProps) {
       </div>
 
       {/* 推荐动作 */}
-      <div className="px-4 mt-5">
+      <div className="px-4 mt-5 animate-stagger-5">
         <div className="flex items-center justify-between mb-3">
           <h3 className="font-bold text-gray-800 flex items-center gap-2">
             <Zap className="w-4 h-4 text-amber-500" />

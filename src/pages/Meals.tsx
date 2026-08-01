@@ -95,14 +95,14 @@ export function Meals({ onNavigate }: MealsProps) {
       </div>
 
       <div className="px-4 py-4">
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center justify-between mb-4 animate-stagger-1">
           <span className="text-sm text-gray-500">共 {filteredMeals.length} 个食谱</span>
           <button className="flex items-center gap-1 text-sm text-gray-500">
             <Filter className="w-4 h-4" />
             筛选
           </button>
         </div>
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-2 gap-3 animate-stagger-2">
           {filteredMeals.map((meal) => (
             <MealCard key={meal.id} meal={meal} onClick={() => onNavigate(`meal/${meal.id}`)} />
           ))}

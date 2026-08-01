@@ -156,7 +156,7 @@ export function Community() {
         <div className="px-4 py-4 space-y-4">
           <button
             onClick={() => setShowPostModal(true)}
-            className="w-full bg-white rounded-2xl p-4 shadow-sm flex items-center gap-3 hover:bg-gray-50 transition-colors"
+            className="w-full bg-white rounded-2xl p-4 shadow-sm flex items-center gap-3 hover:bg-gray-50 transition-colors animate-stagger-1"
           >
             <div className="w-10 h-10 bg-primary-100 rounded-full flex items-center justify-center">
               <span className="text-primary-500 font-bold">{user.name[0]}</span>
@@ -175,7 +175,7 @@ export function Community() {
             const displayComments = showFullComments ? post.comments : post.comments.slice(0, 2);
 
             return (
-              <div key={post.id} className="bg-white rounded-2xl shadow-sm overflow-hidden">
+              <div key={post.id} className="bg-white rounded-2xl shadow-sm overflow-hidden animate-stagger-2">
                 <div className="p-4">
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center gap-3">
@@ -310,7 +310,7 @@ export function Community() {
 
       {activeTab === 'topics' && (
         <div className="px-4 py-4 space-y-3">
-          <div className="bg-white rounded-2xl p-4 shadow-sm">
+          <div className="bg-white rounded-2xl p-4 shadow-sm animate-stagger-1">
             <h3 className="font-bold text-gray-800 mb-4 flex items-center gap-2">
               <TrendingUp className="w-5 h-5 text-primary-500" />
               热门话题
@@ -331,7 +331,7 @@ export function Community() {
             </div>
           </div>
 
-          <div className="bg-white rounded-2xl p-4 shadow-sm">
+          <div className="bg-white rounded-2xl p-4 shadow-sm animate-stagger-2">
             <h3 className="font-bold text-gray-800 mb-4">🔥 热门标签</h3>
             <div className="flex flex-wrap gap-2">
               {['减脂', '增肌', '晨跑', '瑜伽', '健身餐', '蛋白粉', '跑步机', '哑铃', '马甲线', '八块腹肌', '体脂率', '基础代谢', 'HIIT', '力量训练', '有氧运动'].map((tag, index) => (
@@ -346,7 +346,7 @@ export function Community() {
 
       {activeTab === 'users' && (
         <div className="px-4 py-4 space-y-3">
-          <div className="bg-white rounded-2xl p-4 shadow-sm">
+          <div className="bg-white rounded-2xl p-4 shadow-sm animate-stagger-1">
             <h3 className="font-bold text-gray-800 mb-4">🏆 健身达人</h3>
             <div className="space-y-4">
               {communityUsers.map((communityUser) => (

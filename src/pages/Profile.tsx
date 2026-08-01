@@ -48,7 +48,7 @@ export function Profile({ onNavigate }: ProfileProps) {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-healthy-50 pb-28">
-      <div className="relative overflow-hidden bg-gradient-to-br from-primary-500 via-primary-400 to-emerald-400 text-white px-4 pt-14 pb-8">
+      <div className="relative overflow-hidden bg-gradient-to-br from-primary-500 via-primary-400 to-emerald-400 text-white px-4 pt-14 pb-8 animate-stagger-1">
         <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/3" />
         
         <div className="relative flex items-center justify-between mb-5">
@@ -79,7 +79,7 @@ export function Profile({ onNavigate }: ProfileProps) {
         </div>
       </div>
 
-      <div className="px-4 -mt-4">
+      <div className="px-4 -mt-4 animate-stagger-2">
         <div className="bg-white rounded-2xl p-4 shadow-card">
           <div className="flex items-center justify-between mb-4">
             <h3 className="font-bold text-gray-800">身体数据</h3>
@@ -111,7 +111,7 @@ export function Profile({ onNavigate }: ProfileProps) {
         </div>
       </div>
 
-      <div className="px-4 mt-4">
+      <div className="px-4 mt-4 animate-stagger-3">
         <div className="bg-white rounded-2xl p-4 shadow-card">
           <h3 className="font-bold text-gray-800 mb-3">运动统计</h3>
           <div className="grid grid-cols-3 gap-4">
@@ -128,7 +128,7 @@ export function Profile({ onNavigate }: ProfileProps) {
         </div>
       </div>
 
-      <div className="px-4 mt-4">
+      <div className="px-4 mt-4 animate-stagger-4">
         <div className="bg-white rounded-2xl p-4 shadow-card">
           <h3 className="font-bold text-gray-800 mb-3">本周数据</h3>
           <div className="grid grid-cols-3 gap-4">
